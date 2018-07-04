@@ -28,7 +28,25 @@
                                 <svg :class="{ iconSearch: inputWidth.isSearch, 'iconClose': inputWidth.isClose }" aria-hidden="true">
                                     <use xlink:href="#icon-fangdajing"></use>
                                 </svg>   
-                            </i>                        
+                            </i>
+                            <el-card class="box-card meCard" v-show="inputWidth.isSearch == false">
+                                <div class="clearfix">
+                                    <span class="headerLeft">热门搜索</span>
+                                    <i style="float:right;margin-right:9px;">
+                                        <svg class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-huanyipi"></use>
+                                        </svg>
+                                        <p>换一批</p>                                        
+                                    </i>
+                                    <div class="headerContent">
+                                        <div v-for="item in tagsArray" :key="item.name">
+                                            <span class="spanBorder">
+                                                {{item.name}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </el-card>                                                    
                         </li>
                     </ul>
                 </div>
@@ -58,13 +76,37 @@
 </template>
 
 <script>
+    import { getTodoList, addTodo } from '../../api/api'; // 引入我们 封装好的两个接口函数。
     export default {
         data () {
             return {
                 inputWidth: {
                     isSearch: true,
                     isClose: false
-                }
+                },
+                tagsArray:[
+                    {
+                        name:"理财理财理财理财"
+                    },
+                    {
+                        name:"理财"                        
+                    },
+                    {
+                        name:"理财"                        
+                    },
+                    {
+                        name:"理财"                        
+                    },
+                    {
+                        name:"理财"                        
+                    },
+                    {
+                        name:"理财"                        
+                    },
+                    {
+                        name:"理财"                        
+                    },                                                                                                    
+                ]
             }
         },
         methods: {
@@ -75,7 +117,18 @@
             close() {
                 this.inputWidth.isSearch = true
                 this.inputWidth.isClose = false
+            },
+            getMessage() {
+                getTodoList({}).then(res => {
+                    console.log("res",res)
+                    // const TODOS = res.data.todos; // 数据都会返回在res.data里面。
+                    // this.items = TODOS; // 我的把菜单数据赋值给定义的this.items
+                    // this.todoId = TODOS[0].id; // 把菜单数据的默认的第一个对象的id赋值给默认选中的id
+                });
             }
+        },
+        mounted() {
+            this.getMessage()
         }
     }
 </script>
@@ -163,6 +216,47 @@
                             fill:#fff;
                         }
                     }
+                    .meCard {
+                        position:absolute;
+                        top:56px;
+                        left:0;
+                        z-index:10;
+                        width:250px;
+                        font-size:14px;
+                        text-align: left;
+                        padding-left:1px;
+                        padding-right:5px;
+                        color:#969696;
+                        .headerLeft {
+                            line-height:20px;
+                        }
+                        i {
+                            line-height:20px; 
+                        }
+                        svg {
+                            fill:#969696; 
+                        }
+                        .headerContent {
+                            margin-top:10px;
+                        }
+                        .spanBorder {
+                            float:left;
+                            max-width: 100%;
+                            min-width: 20%;
+                            height:20px;
+                            border:1px solid #ccc;
+                            margin-right:8px;
+                            margin-bottom:10px;
+                            padding:3px;
+                            line-height: 20px;
+                            text-align: center;
+                            border-radius: 3px;
+                        }
+                        .spanBorder:hover {
+                            color:#333;
+                            border:1px solid #333;
+                        }
+                    }
                 }
             }     
         }
@@ -202,7 +296,7 @@
                     }
                 }
             }
-        }
+        }      
     }
 
 </style>
